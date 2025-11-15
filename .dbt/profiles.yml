@@ -1,0 +1,20 @@
+dog_pyne_profile:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account-json
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      dataset: "{{ env_var('DBT_DATASET_DEV') }}"
+      keyfile_json: "{{ env_var('GCP_SA_KEY') }}"
+      threads: 4
+      location: EU
+
+    prod:
+      type: bigquery
+      method: service-account-json
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      dataset: "{{ env_var('DBT_DATASET_PROD') }}"
+      keyfile_json: "{{ env_var('GCP_SA_KEY') }}"
+      threads: 4
+      location: EU
