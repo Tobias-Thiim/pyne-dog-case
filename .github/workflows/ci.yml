@@ -16,7 +16,7 @@ jobs:
       id-token: write
 
     env:
-      DBT_PROFILES_DIR: .dbt
+      DBT_PROFILES_DIR: ${{ github.workspace }}/.dbt
       GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       DBT_DATASET_DEV: ${{ secrets.DBT_DATASET_DEV }}
       DBT_DATASET_PROD: ${{ secrets.DBT_DATASET_PROD }}
