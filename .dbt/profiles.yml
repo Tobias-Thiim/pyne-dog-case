@@ -1,4 +1,4 @@
-dog_pyne_profile:
+dog_pyne_dbt:
   target: dev
   outputs:
     dev:
