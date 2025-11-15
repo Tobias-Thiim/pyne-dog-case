@@ -1,0 +1,92 @@
+name: CI and CD
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  test_and_dbt_dev:
+    name: Test and dbt (dev)
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    env:
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      DBT_DATASET_DEV: ${{ secrets.DBT_DATASET_DEV }}
+      DBT_DATASET_PROD: ${{ secrets.DBT_DATASET_PROD }}
+      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install dbt-bigquery
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Run dbt in dev
+        run: |
+          dbt deps
+          dbt run --target dev
+          dbt test --target dev
+
+  deploy_and_dbt_prod:
+    name: Deploy ingestion and run dbt (prod)
+    runs-on: ubuntu-latest
+    needs: test_and_dbt_dev
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    permissions:
+      contents: read
+      id-token: write
+
+    env:
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      DBT_DATASET_DEV: ${{ secrets.DBT_DATASET_DEV }}
+      DBT_DATASET_PROD: ${{ secrets.DBT_DATASET_PROD }}
+      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install dbt-bigquery
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Deploy ingestion job
+        run: |
+          echo "TODO: Tilpas denne blok til din dlt deployment (Cloud Run / Cloud Function / andet)"
+
+      - name: Run dbt in prod
+        run: |
+          dbt deps
+          dbt run --target prod
+          dbt test --target prod
