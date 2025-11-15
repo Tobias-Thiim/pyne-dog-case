@@ -41,6 +41,12 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
+      - name: Create keyfile for dbt
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          echo "$GCP_SA_KEY" > /tmp/gcp_key.json
+
       - name: Run dbt in dev
         run: |
           dbt deps
@@ -58,6 +64,7 @@ jobs:
       id-token: write
 
     env:
+      DBT_PROFILES_DIR: .dbt
       GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       DBT_DATASET_DEV: ${{ secrets.DBT_DATASET_DEV }}
       DBT_DATASET_PROD: ${{ secrets.DBT_DATASET_PROD }}
@@ -85,6 +92,12 @@ jobs:
       - name: Deploy ingestion job
         run: |
           echo "TODO: Tilpas denne blok til din dlt deployment (Cloud Run / Cloud Function / andet)"
+
+      - name: Create keyfile for dbt
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          echo "$GCP_SA_KEY" > /tmp/gcp_key.json
 
       - name: Run dbt in prod
         run: |
