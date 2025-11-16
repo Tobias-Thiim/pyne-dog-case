@@ -1,0 +1,105 @@
+version: 2
+
+models:
+  - name: dim_breed
+    description: "Dimension table for dog breeds"
+    columns:
+      - name: breed_id
+        description: "Unique identifier for the breed"
+        tests:
+          - not_null
+          - unique
+
+      - name: breed_name
+        description: "Breed name"
+        tests:
+          - not_null
+
+      - name: temperament
+        description: "Typical temperament description for the breed"
+
+      - name: breed_group
+        description: "Group classification of the breed"
+
+      - name: bred_for
+        description: "Original purpose the breed was developed for"
+
+  - name: fact_weight_life_span
+    description: "Fact table with weight, height and lifespan metrics per breed"
+    columns:
+      - name: breed_id
+        description: "Identifier linking to dim_breed"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_breed')
+              field: breed_id
+
+      - name: breed_name
+        description: "Breed name (denormalised from dim_breed)"
+        tests:
+          - not_null
+
+      - name: weight_kg_min
+        description: "Minimum weight in kilograms"
+        tests:
+          - not_null
+          - accepted_range:
+              min: 0
+              max: 120
+
+      - name: weight_kg_max
+        description: "Maximum weight in kilograms"
+        tests:
+          - not_null
+          - accepted_range:
+              min: 0
+              max: 120
+
+      - name: weight_lbs_min
+        description: "Minimum weight in pounds"
+        tests:
+          - not_null
+          - accepted_range:
+              min: 0
+              max: 260
+
+      - name: weight_lbs_max
+        description: "Maximum weight in pounds"
+        tests:
+          - not_null
+          - accepted_range:
+              min: 0
+              max: 260
+
+      - name: height_cm_min
+        description: "Minimum height in centimetres"
+        tests:
+          - not_null
+          - accepted_range:
+              min: 0
+              max: 120
+
+      - name: height_cm_max
+        description: "Maximum height in centimetres"
+        tests:
+          - not_null
+          - accepted_range:
+              min: 0
+              max: 120
+
+      - name: lifespan_years_min
+        description: "Minimum expected lifespan in years"
+        tests:
+          - not_null
+          - accepted_range:
+              min: 1
+              max: 30
+
+      - name: lifespan_years_max
+        description: "Maximum expected lifespan in years"
+        tests:
+          - not_null
+          - accepted_range:
+              min: 1
+              max: 30
