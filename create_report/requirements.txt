@@ -1,5 +1,6 @@
+jupyter
+notebook
+nbconvert
 google-cloud-bigquery
 pandas
 matplotlib
-jupyter
-nbconvert
