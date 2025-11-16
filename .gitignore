@@ -3,10 +3,8 @@ target/
 dbt_packages/
 logs/
 pyne-dogs-local.json
-create_report/*.html
-create_report/*.png
 create_report/output/*
-!create_report/output/
+!create_report/output/report.html
 p y n e - d o g s - t t m - c l e s . j s o n 
  
  
