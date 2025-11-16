@@ -8,7 +8,7 @@ dog_pyne_dbt:
       dataset: "{{ env_var('DBT_DATASET_DEV') }}"
       keyfile: /tmp/gcp_key.json
       threads: 4
-      location: EU
+      location: US
 
     prod:
       type: bigquery
