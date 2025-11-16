@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
     # Undgå at trigge workflowet igen, når report.html bliver committed
     paths-ignore:
-      - 'dog_pyne_dbt/create_report/output/**'
+      - 'create_report/output/**'
   workflow_dispatch:
 
 jobs:

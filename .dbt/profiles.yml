@@ -4,8 +4,17 @@ dog_pyne_dbt:
     dev:
       type: bigquery
       method: service-account
-      project: pyne-dogs-ttm          # dit projekt-id
-      dataset: bronze                 # eller bronze_prod, hvis det er der marts ligger
-      keyfile: C:\Users\Ptyhon\Desktop\pyne-dog-case\dog_pyne_dbt\pyne-dogs-local.json
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      dataset: "{{ env_var('DBT_DATASET_DEV') }}"
+      keyfile: /tmp/gcp_key.json
+      threads: 4
+      location: US
+
+    prod:
+      type: bigquery
+      method: service-account
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      dataset: "{{ env_var('DBT_DATASET_PROD') }}"
+      keyfile: /tmp/gcp_key.json
       threads: 4
       location: US
