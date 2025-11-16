@@ -27,8 +27,27 @@ with base as (
         ) as lifespan_years_max
 
     from {{ ref('stg_dog_breeds') }}
+),
+
+enriched as (
+    select
+        base.*,
+        -- Gennemsnitlig forventet levetid
+        (lifespan_years_min + lifespan_years_max) / 2.0 as lifespan_years_avg,
+
+        -- Gennemsnitlig vægt i kg
+        (weight_kg_min + weight_kg_max) / 2.0 as weight_kg_avg,
+
+        -- Vægtklasser
+        case
+            when (weight_kg_min + weight_kg_max) / 2.0 < 10 then 'Small'
+            when (weight_kg_min + weight_kg_max) / 2.0 < 25 then 'Medium'
+            when (weight_kg_min + weight_kg_max) / 2.0 < 40 then 'Large'
+            else 'Giant'
+        end as weight_class
+    from base
 )
 
 select *
-from base
+from enriched
 order by breed_name

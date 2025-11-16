@@ -1,0 +1,3 @@
+dlt[bigquery]==1.18.2       # Data Load Tool med BigQuery support
+Flask==2.2.5               # Flask web framework
+gunicorn==20.1.0           # Produktions WSGI server til Flask
