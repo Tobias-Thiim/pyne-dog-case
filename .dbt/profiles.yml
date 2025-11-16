@@ -17,4 +17,4 @@ dog_pyne_dbt:
       dataset: "{{ env_var('DBT_DATASET_PROD') }}"
       keyfile: /tmp/gcp_key.json
       threads: 4
-      location: EU
+      location: US
