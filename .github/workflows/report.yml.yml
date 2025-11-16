@@ -1,0 +1,43 @@
+name: Generate Data Report
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r dog_pyne_dbt/create_report/requirements.txt
+
+      - name: Write GCP key to file
+        env:
+          GCP_CREDS: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        run: |
+          echo "$GCP_CREDS" > gcp_key.json
+          export GOOGLE_APPLICATION_CREDENTIALS="$PWD/gcp_key.json"
+
+      - name: Convert notebook to HTML
+        run: |
+          jupyter nbconvert \
+            --to html \
+            dog_pyne_dbt/create_report/report.ipynb \
+            --output dog_pyne_dbt/create_report/output/report.html
+
+      - name: Upload HTML report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dog-report
+          path: dog_pyne_dbt/create_report/output/report.html
