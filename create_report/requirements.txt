@@ -4,3 +4,5 @@ nbconvert
 google-cloud-bigquery
 pandas
 matplotlib
+db-dtypes
+
