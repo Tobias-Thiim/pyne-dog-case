@@ -110,4 +110,4 @@ Required secret:
 
 ## Updating the report
 - Edit create_report/report.ipynb (queries, visuals, formatting).
-- Commit and push; the report workflow will regenerate and commit the updated HTML.
+- Commit and push the report workflow will regenerate and commit the updated HTM:
