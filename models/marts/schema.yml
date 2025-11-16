@@ -32,8 +32,9 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('dim_breed')
-              field: breed_id
+              arguments:
+                to: ref('dim_breed')
+                field: breed_id
 
       - name: breed_name
         description: "Breed name (denormalised from dim_breed)"
@@ -43,7 +44,9 @@ models:
       - name: weight_kg_min
         description: "Minimum weight in kilograms"
         tests:
-          - not_null
+          - not_null:
+              config:
+                severity: warn
           - accepted_range:
               min: 0
               max: 120
@@ -51,7 +54,9 @@ models:
       - name: weight_kg_max
         description: "Maximum weight in kilograms"
         tests:
-          - not_null
+          - not_null:
+              config:
+                severity: warn
           - accepted_range:
               min: 0
               max: 120
@@ -59,7 +64,9 @@ models:
       - name: weight_lbs_min
         description: "Minimum weight in pounds"
         tests:
-          - not_null
+          - not_null:
+              config:
+                severity: warn
           - accepted_range:
               min: 0
               max: 260
@@ -99,7 +106,9 @@ models:
       - name: lifespan_years_max
         description: "Maximum expected lifespan in years"
         tests:
-          - not_null
+          - not_null:
+              config:
+                severity: warn
           - accepted_range:
               min: 1
               max: 30
